@@ -53,16 +53,15 @@ function calculateRewardForHeightRange(
 function createMassRewardTXs(balances, rpdConfig, { attachment, assetId, seed }) {
     const transfers = [];
 
-    let total = 0;
+    // let total = 0;
     for (const address in balances) {
         const value = balances[address];
         const roundedValue = Math.round(value);
         if (roundedValue > 0) {
-            total += roundedValue;
+            // total += roundedValue;
             transfers.push({ amount: roundedValue, recipient: address });
         }
     }
-
     const paymentsCount = 100;
     const maxRewardTXsCount = Math.ceil(transfers.length / 100);
     const rewardTXs = Array(maxRewardTXsCount);
@@ -70,8 +69,9 @@ function createMassRewardTXs(balances, rpdConfig, { attachment, assetId, seed })
 
     for (let i = 0; i < lenTransfers; i += paymentsCount) {
         let endIndex = i + paymentsCount;
+        const isEndIndexBigger = endIndex > lenTransfers;
 
-        if (endIndex > lenTransfers) {
+        if (isEndIndexBigger) {
             endIndex = lenTransfers;
         }
         const currentTransfers = transfers.slice(i, endIndex);
@@ -83,6 +83,10 @@ function createMassRewardTXs(balances, rpdConfig, { attachment, assetId, seed })
         });
 
         rewardTXs.push(rewardTx);
+
+        if (isEndIndexBigger) {
+            break;
+        }
     }
 }
 
