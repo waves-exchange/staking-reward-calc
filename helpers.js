@@ -1,5 +1,10 @@
 const { massTransfer } = require('@waves/waves-transactions');
 
+const AttachmentEnum = {
+    referral: 'sp',
+    direct: '',
+};
+
 const TRANSACTION_TYPE = {
     ISSUE: 3,
     TRANSFER: 4,
@@ -50,7 +55,7 @@ function calculateRewardForHeightRange(
     }
 }
 
-function createMassRewardTXs(balances, rpdConfig, { attachment, assetId, seed }) {
+function createMassRewardTXs(balances, { attachment, assetId, seed }) {
     const transfers = [];
 
     // let total = 0;
@@ -93,4 +98,5 @@ function createMassRewardTXs(balances, rpdConfig, { attachment, assetId, seed })
 module.exports = {
     calculateRewardForHeightRange,
     createMassRewardTXs,
+    AttachmentEnum,
 };

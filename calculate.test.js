@@ -1,4 +1,4 @@
-const { createMassRewardTXs, calculateRewardForHeightRange } = require('./helpers');
+const { createMassRewardTXs, calculateRewardForHeightRange, AttachmentEnum } = require('./helpers');
 
 const NEUTRINO_DECIMAL = 1e6;
 const neutrinoPrice = 95; // Like 0.95$
@@ -6,6 +6,7 @@ const nodeMinedNeutrino = 5 * NEUTRINO_DECIMAL;
 
 const testStaker = '3PQSC3ysFKPvYba86VK84ZZKhS5ZRb725vz';
 const testJsonRoute = 'https://api.myjson.com/bins/cf7og';
+const assetId = 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p';
 
 describe('test rewards', () => {
     const testJson = {
@@ -38,5 +39,34 @@ describe('test rewards', () => {
             lastPaymentHeight,
             balances
         );
+
+        const transactions = createMassRewardTXs(rewards, {
+            attachment: AttachmentEnum.direct,
+            assetId: assetId,
+        });
+
+        console.log(transactions);
+    });
+
+    it('compute referral reward', async () => {
+        const balances = testJson;
+        const totalProfit = 1000 * NEUTRINO_DECIMAL;
+
+        const lastPaymentHeight = 1983858; // 22.03.2020, 17:56:09
+        const currentHeight = 1900000;
+
+        const rewards = calculateRewardForHeightRange(
+            totalProfit,
+            currentHeight,
+            lastPaymentHeight,
+            balances
+        );
+
+        const transactions = createMassRewardTXs(rewards, {
+            attachment: AttachmentEnum.referral,
+            assetId: assetId,
+        });
+
+        console.log(transactions);
     });
 });
