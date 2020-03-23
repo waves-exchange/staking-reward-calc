@@ -1,5 +1,21 @@
+const { massTransfer } = require('@waves/waves-transactions');
 
-
+const TRANSACTION_TYPE = {
+    ISSUE: 3,
+    TRANSFER: 4,
+    REISSUE: 5,
+    BURN: 6,
+    EXCHANGE: 7,
+    LEASE: 8,
+    CANCEL_LEASE: 9,
+    ALIAS: 10,
+    MASS_TRANSFER: 11,
+    DATA: 12,
+    SET_SCRIPT: 13,
+    SPONSORSHIP: 14,
+    SET_ASSET_SCRIPT: 15,
+    INVOKE_SCRIPT: 16,
+};
 
 function calculateRewardForHeightRange(
     totalProfit,
@@ -34,8 +50,7 @@ function calculateRewardForHeightRange(
     }
 }
 
-
-function createMassRewardTXs(balances, rpdConfig, { sender, assetId }) {
+function createMassRewardTXs(balances, rpdConfig, { attachment, assetId, seed }) {
     const transfers = [];
 
     let total = 0;
@@ -60,15 +75,18 @@ function createMassRewardTXs(balances, rpdConfig, { sender, assetId }) {
             endIndex = lenTransfers;
         }
         const currentTransfers = transfers.slice(i, endIndex);
-        // const rewardTx = massTransfer({
-        //   transfers: currentTransfers
-        // })
-        // rewardTXs.push(rewardTx)
+        const rewardTx = massTransfer({
+            type: TRANSACTION_TYPE.MASS_TRANSFER,
+            transfers: currentTransfers,
+            attachment,
+            assetId,
+        });
+
+        rewardTXs.push(rewardTx);
     }
 }
 
-
 module.exports = {
     calculateRewardForHeightRange,
-    createMassRewardTXs
-}
+    createMassRewardTXs,
+};
