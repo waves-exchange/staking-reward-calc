@@ -1,0 +1,23 @@
+{
+  "name": "staking-reward-calc",
+  "version": "1.0.0",
+  "description": "Neutrino Staking Reward Calculator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ventuary-lab/staking-reward-calc.git"
+  },
+  "author": "Shamil Khalilov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ventuary-lab/staking-reward-calc/issues"
+  },
+  "homepage": "https://github.com/ventuary-lab/staking-reward-calc#readme",
+  "dependencies": {
+    "@types/mocha": "^7.0.2",
+    "mocha": "^7.1.1"
+  }
+}
