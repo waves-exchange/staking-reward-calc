@@ -4,6 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 
 from sys import argv
+import argparse
 
 import json
 
@@ -60,12 +61,11 @@ class RequestHandler(BaseHTTPRequestHandler):
         return
 
     def do_POST(self):
-        post_body = self.rfile.read()
+        content_len = int(self.headers.get('content-length'))
+        post_body = self.rfile.read(content_len)
         data = json.loads(post_body)
 
-        print(data)
         datapayments = data["payments"]
-
         oracle = pw.Oracle(oracleAddress = '3PNikM6yp4NqcSU8guxQtmR5onr2D4e8yTJ')
         configs = oracle.getData(regex = 'stakingconfig_current_.*')
 
@@ -85,6 +85,10 @@ class ScriptUtils:
     @staticmethod
     def get_params():
         port = 8000
+
+        # parser = argparse.ArgumentParser()
+        # parser.add_argument('--nodeUrl')
+        # args = parser.parse_args()
 
         if len(argv) > 0:
             port = int(argv[1])
