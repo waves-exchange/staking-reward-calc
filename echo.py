@@ -2,6 +2,9 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
+
+from sys import argv
+
 import json
 
 import pywaves as pw
@@ -57,9 +60,10 @@ class RequestHandler(BaseHTTPRequestHandler):
         return
 
     def do_POST(self):
-        content_len = int(self.headers.getheader('content-length'))
-        post_body = self.rfile.read(content_len)
+        post_body = self.rfile.read()
         data = json.loads(post_body)
+
+        print(data)
         datapayments = data["payments"]
 
         oracle = pw.Oracle(oracleAddress = '3PNikM6yp4NqcSU8guxQtmR5onr2D4e8yTJ')
@@ -70,11 +74,26 @@ class RequestHandler(BaseHTTPRequestHandler):
         result = refferalWizard(datapayments, fconfigs)
 
         self.send_response(200)
+        self.send_header("Content-type", "application/json")
         self.end_headers()
+
         self.wfile.write(json.dumps(result).encode())
+
         return
 
+class ScriptUtils:
+    @staticmethod
+    def get_params():
+        port = 8000
+
+        if len(argv) > 0:
+            port = int(argv[1])
+
+        return [port]
+
 if __name__ == '__main__':
-    server = HTTPServer(('localhost', 8000), RequestHandler)
-    print('Starting server at http://localhost:8000')
+    [port] = ScriptUtils.get_params()
+
+    server = HTTPServer(('0.0.0.0', port), RequestHandler)
+    print('Starting server at http://localhost:' + str(port))
     server.serve_forever()
