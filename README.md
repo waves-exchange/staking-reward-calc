@@ -41,7 +41,7 @@ curl -X POST --data '{"payments":[{"recipient":"3P2qrqPXWfsrX7uZidpRcYu35r81UGjH
 
 ## Deployment
 
-Simply copy systemd service provding desired name.
+Simply copy systemd service providing desired name.
 
 For i.g.:
 
