@@ -6,7 +6,7 @@
 The main idea of staking bot calculator is calculating
 staking rewards of specific address and figuring two types of the rewards: referral and direct.
 
-### Scripts reference
+## Scripts reference
 
 #### `echo.py`
 
@@ -38,6 +38,28 @@ curl -X POST --data '{"payments":[{"recipient":"3P2qrqPXWfsrX7uZidpRcYu35r81UGjH
 ```
 {"direct": [{"recipient": "3P2qrqPXWfsrX7uZidpRcYu35r81UGjHehB", "amount": 800000000}, {"recipient": "3P3eFkKKZ42a7dDtvKrJ5ZWNak5a2T4VNCW", "amount": 2400000000}, {"recipient": "3P3K39AP3yWfPUALfbNFRLKtNfCmGxpN8hE", "amount": 1600000000}], "ref": [{"recipient": "3PKn6rTtDPwbP1a6DtmQYfeRL4bntwUt8W1", "amount": 600000000}, {"recipient": "3P3F2MZzebicC9iJvXH5Puv7qDnuUiryB4r", "amount": 200000000}, {"recipient": "3PCS2Zi2WKtsuH9irkYGA5fN16epE9EhVBQ", "amount": 400000000}]}
 ```
+
+## Deployment
+
+Simply copy systemd service provding desired name.
+
+For i.g.:
+
+Copy service to systemd directory (default port specified in service file is 8009):
+> cp systemd/example.service /etc/systemd/system/staking-rc.service
+
+By the way, filename is crucial, the way you name service file depends on how we'll start it.
+Start the bot:
+> service staking-rc start
+
+Check status
+> service staking-rc status
+
+Schedule service start on system boot
+
+> systemctl enable staking-rc
+
+[Systemd service example](systemd/examle.service)
 
 ## Request & Response types
 
